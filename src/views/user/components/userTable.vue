@@ -41,28 +41,28 @@
   </div>
 </template>
 <script>
-import USER_CONST from "@/constant/user-const"
+import USER_CONST from '@/constant/user-const'
 export default {
-  name: "UserTable",
+  name: 'UserTable',
   components: {},
+  filters: {
+    img: function(value) {
+      return `${USER_CONST.BASEURL}gets/getImgs/${value}`
+    }
+  },
   props: {
     userList: {
       type: Array,
       required: true,
-      default: () => [],
+      default: () => []
     },
     listLoading: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
-    return {};
-  },
-  filters: {
-    img: function(value) {
-      return `${USER_CONST.BASEURL}gets/getImgs/${value}`;
-    },
+    return {}
   },
   created() {},
   mounted() {},
@@ -77,11 +77,11 @@ export default {
      */
     formatSex(row) {
       if (row.sex === USER_CONST.MALE) {
-        return "男";
+        return '男'
       } else if (row.sex === USER_CONST.FEMALE) {
-        return "女";
+        return '女'
       } else {
-        return "保密";
+        return '保密'
       }
     },
     /**
@@ -93,11 +93,11 @@ export default {
      */
     formatConfirmed(row) {
       if (row.confirmed === USER_CONST.TRUE) {
-        return "已验证";
+        return '已验证'
       } else if (row.confirmed === USER_CONST.FALSE) {
-        return "未验证";
+        return '未验证'
       } else {
-        return "数据错误";
+        return '数据错误'
       }
     },
     /**
@@ -109,7 +109,7 @@ export default {
      * @param row  Object  当前行数据
      */
     handleEdit(index, row) {
-      this.$emit("handleEdit", index, row); // 执行绑定的方法
+      this.$emit('handleEdit', index, row) // 执行绑定的方法
     },
     /**
      * @Author: 杨旭晨
@@ -120,10 +120,10 @@ export default {
      * @param row  Object  当前行数据
      */
     handleDelete(index, row) {
-      this.$emit("handleDelete", index, row);
-    },
-  },
-};
+      this.$emit('handleDelete', index, row)
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 .button {
