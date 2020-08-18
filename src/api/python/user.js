@@ -3,7 +3,7 @@
  * @Date: 2020-08-10 10:20:45
  * @Descripttion: 用户api
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-10 10:22:46
+ * @LastEditTime: 2020-08-18 09:27:52
  */
 import request from '@/utils/request'
 
@@ -12,10 +12,7 @@ export default {
    * @Author: 杨旭晨
    * @Date: 2020-07-28 10:16:35
    * @LastEditors: 杨旭晨
-   * @Descripttion: 按条件分页查询用户
-   * @param queryUser Object(User) 查询条件
-   * @param pageNum int 查询第多少页
-   * @param pageSize int 每页多少条
+   * @Descripttion: 按条件查询用户
    */
   listAll() {
     return request({
@@ -30,11 +27,11 @@ export default {
    * @Descripttion: 更新用户
    * @param updateUser Object(User) 要更新的用户对象
    */
-  update(updateUser) {
+  update(data) {
     return request({
-      url: 'user/update',
+      url: '/posts/uploadProfile',
       method: 'post',
-      data: updateUser
+      data
     })
   },
   /**
@@ -46,7 +43,7 @@ export default {
    */
   add(newUser) {
     return request({
-      url: 'user/add',
+      url: '/posts/addUser',
       method: 'post',
       data: newUser
     })
@@ -60,8 +57,8 @@ export default {
    */
   delete(id) {
     return request({
-      url: 'user/delete/' + id,
-      method: 'post'
+      url: `/users/deleteUserById/${id}`,
+      method: 'get'
     })
   },
   /**
@@ -71,12 +68,12 @@ export default {
    * @Descripttion: 验证用户名是否可用
    * @param username String 要验证的用户名
    */
-  checkUsername(username) {
-    return request({
-      url: 'user/checkUsername/' + username,
-      method: 'post'
-    })
-  },
+  // checkUsername(username) {
+  //   return request({
+  //     url: 'user/checkUsername/' + username,
+  //     method: 'post'
+  //   })
+  // },
   /**
    * @Author: 杨旭晨
    * @Date: 2020-07-28 14:53:43
@@ -84,10 +81,10 @@ export default {
    * @Descripttion: 验证学号是否可用
    * @param stuNum String 要验证的学号
    */
-  checkStuNum(stuNum) {
-    return request({
-      url: 'user/checkStuNum/' + stuNum,
-      method: 'post'
-    })
-  }
+  // checkStuNum(stuNum) {
+  //   return request({
+  //     url: 'user/checkStuNum/' + stuNum,
+  //     method: 'post'
+  //   })
+  // }
 }

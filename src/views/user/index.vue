@@ -3,7 +3,7 @@
  * @Date: 2020-07-24 10:40:27
  * @Descripttion: 用户组件
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-10 15:15:35
+ * @LastEditTime: 2020-08-18 10:24:20
 -->
 <template>
   <div class="app-container">
@@ -14,22 +14,22 @@
       @handleEdit="handleEdit"
       @handleDelete="handleDelete"
     />
-    <!-- <UserEditDialog :edit-user="editUserData" :is-show="isShowEditDialog" @handleClose="handleClose" @onSubmit="update" />
-    <UserNewDialog :is-show="isShowNewDialog" @handleClose="handleClose" @onSubmit="insert" /> -->
+    <UserEditDialog :edit-user="editUserData" :is-show="isShowEditDialog" @handleClose="handleClose" @onSubmit="update" />
+    <!-- <UserNewDialog :is-show="isShowNewDialog" @handleClose="handleClose" @onSubmit="insert" /> -->
   </div>
 </template>
 
 <script>
 import UserApi from '@/api/python/user.js'
 import UserTable from './components/userTable'
-// import UserEditDialog from './components/userEditDialog'
+import UserEditDialog from './components/userEditDialog'
 // import UserNewDialog from './components/userNewDialog'
 // import HeadSerch from './components/headSerch'
 export default {
   name: 'User',
   components: {
-    UserTable
-    // UserEditDialog,
+    UserTable,
+    UserEditDialog,
     // HeadSerch,
     // UserNewDialog
   },
@@ -79,7 +79,7 @@ export default {
     handleEdit(index, row) {
       console.log('row: ', row)
       this.isShowEditDialog = true
-      this.editUserData = row
+      this.editUserData = { ...row }
     },
     /**
      * @Author: 杨旭晨
@@ -102,7 +102,7 @@ export default {
     update(updateUser) {
       this.listLoading = true // 启动表格加载状态
       UserApi.update(updateUser).then(res => {
-        if (res.msg === 'success') { // 更新成功
+        if (res.code === 1) { // 更新成功
           this.$message({
             message: '修改成功',
             type: 'success'
@@ -185,18 +185,24 @@ export default {
      */
     handleDelete(index, row) {
       UserApi.delete(row.id).then(res => {
-        if (res.msg === 'success') { // 更新成功
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          })
-          this.getUserList() // 更新成功，重新获取数据
-        } else { // 更新失败
-          this.$message({
-            message: res.msg,
-            type: 'error'
-          })
-        }
+        console.log('delete', res)
+        this.$message({
+          type: 'success',
+          message: res.message
+        })
+        this.getUserList()
+        // if (res.msg === 'success') { // 更新成功
+        //   this.$message({
+        //     message: '删除成功',
+        //     type: 'success'
+        //   })
+        //   this.getUserList() // 更新成功，重新获取数据
+        // } else { // 更新失败
+        //   this.$message({
+        //     message: res.msg,
+        //     type: 'error'
+        //   })
+        // }
       })
     }
   }
