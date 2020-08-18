@@ -3,7 +3,7 @@
  * @Date: 2020-07-28 09:32:10
  * @Descripttion: 用户信息表单
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-18 10:29:55
+ * @LastEditTime: 2020-08-18 10:47:11
 -->
 <template>
   <div class="user-form">
@@ -184,10 +184,7 @@ export default {
     handleClose() {
       this.$emit('handleClose')
     },
-    // 选择头像之后触发
-    handlePreview(file) {
-      console.log(file)
-    },
+    // 选择头像之后触发，获取图片base64
     onChange(file, fileList) {
       console.log('file', file)
       var reader = new FileReader() // 创建FileReader对象

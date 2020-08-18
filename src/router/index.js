@@ -3,7 +3,7 @@
  * @Date: 2020-07-24 10:40:27
  * @Descripttion:
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-10 15:18:46
+ * @LastEditTime: 2020-08-18 10:45:00
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -73,6 +73,21 @@ export const constantRoutes = [
         name: '用户管理',
         component: () => import('@/views/user/index'),
         meta: { title: 'User', icon: 'user' }
+      }
+    ]
+  },
+  {
+    path: '/article',
+    component: Layout,
+    redirect: '/article/index',
+    name: '文章管理',
+    meta: { title: '文章管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'article',
+        name: '文章管理',
+        component: () => import('@/views/article/index'),
+        meta: { title: '文章管理', icon: 'user' }
       }
     ]
   },
