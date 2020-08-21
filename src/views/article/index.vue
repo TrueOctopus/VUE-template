@@ -3,16 +3,17 @@
  * @Date: 2020-08-18 10:44:47
  * @Descripttion:
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-18 11:22:41
+ * @LastEditTime: 2020-08-21 17:05:09
 -->
 <template>
   <div class="article">
-    <Header />
-    <Table :article-list="articleList" :loading="loading" @handleDelete="handleDelete" />
+    <Header @uploadImg="uploadImg" @uploadMd="uploadMd" />
+    <Table :article-list="articleList" :loading="loading" @handleDelete="handleDelete" @handleUpdate="handleUpdate" @handleDownload="download" />
   </div>
 </template>
 <script>
 import articleApi from '@/api/python/article'
+import imgApi from '@/api/python/img'
 import Table from './components/table'
 import Header from './components/header'
 export default {
@@ -48,11 +49,101 @@ export default {
         console.log('delete', res)
         if (res.code === 1) {
           this.$message({
-            typw: 'success',
+            type: 'success',
             message: res.message
           })
           this.getList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.message
+          })
         }
+      })
+    },
+    // 添加文章
+    add(file) {
+      articleApi.add(file).then(res => {
+        if (res.code === 1) {
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
+          this.getList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.message
+          })
+        }
+      })
+    },
+    // 更新文章
+    update(file) {
+      articleApi.update(file).then(res => {
+        if (res.code === 1) {
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
+          this.getList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.message
+          })
+        }
+      })
+    },
+    // 下载文章
+    download(row) {
+      articleApi.download(row.filename).then(res => {
+        const blob = new Blob([res], { type: res.type })
+        const downloadElement = document.createElement('a')
+        const href = window.URL.createObjectURL(blob) // 创建下载的链接
+        downloadElement.href = href
+        downloadElement.download = row.filename + '.md' // 下载后文件名
+        document.body.appendChild(downloadElement)
+        downloadElement.click() // 点击下载
+        document.body.removeChild(downloadElement) // 下载完成移除元素
+        window.URL.revokeObjectURL(href) // 释放blob对象
+      })
+    },
+    // 上传图片
+    uploadImg(file) {
+      imgApi.uploadImg(file.file).then(res => {
+        this.$message({
+          type: 'success',
+          message: res.message
+        })
+      })
+    },
+    // 上传md文件
+    uploadMd(file) {
+      articleApi.add(file.file).then(res => {
+        this.$message({
+          type: 'success',
+          message: res.message
+        })
+        this.getList()
+      })
+    },
+    // 更新文章
+    handleUpdate(file) {
+      articleApi.update(file.file).then(res => {
+        if (res.code === 1) {
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
+          this.getList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.message
+          })
+        }
+        this.getList()
       })
     }
   }

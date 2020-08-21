@@ -3,11 +3,11 @@
  * @Date: 2020-07-24 10:40:27
  * @Descripttion: 用户组件
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-18 10:24:20
+ * @LastEditTime: 2020-08-21 17:26:25
 -->
 <template>
   <div class="app-container">
-    <!-- <HeadSerch v-model="headSerchData" @onSerch="onSerch" @handleReset="handleReset" @handleNew="handleNew" /> -->
+    <HeadSerch v-model="headSerchData" @onSerch="onSerch" @handleReset="handleReset" @handleNew="handleNew" />
     <UserTable
       :user-list="userList"
       :list-loading="listLoading"
@@ -15,7 +15,7 @@
       @handleDelete="handleDelete"
     />
     <UserEditDialog :edit-user="editUserData" :is-show="isShowEditDialog" @handleClose="handleClose" @onSubmit="update" />
-    <!-- <UserNewDialog :is-show="isShowNewDialog" @handleClose="handleClose" @onSubmit="insert" /> -->
+    <UserNewDialog :is-show="isShowNewDialog" @handleClose="handleClose" @onSubmit="insert" />
   </div>
 </template>
 
@@ -23,15 +23,16 @@
 import UserApi from '@/api/python/user.js'
 import UserTable from './components/userTable'
 import UserEditDialog from './components/userEditDialog'
-// import UserNewDialog from './components/userNewDialog'
-// import HeadSerch from './components/headSerch'
+import UserNewDialog from './components/userNewDialog'
+import HeadSerch from './components/headSerch'
 export default {
   name: 'User',
   components: {
     UserTable,
     UserEditDialog,
-    // HeadSerch,
-    // UserNewDialog
+    HeadSerch,
+    UserNewDialog
+    //
   },
   data() {
     return {
@@ -140,6 +141,7 @@ export default {
         email: '',
         location: ''
       }
+      this.getUserList()
     },
     /**
      * @Author: 杨旭晨
@@ -160,7 +162,7 @@ export default {
     insert(newUser) {
       console.log('newUser: ', newUser)
       UserApi.add(newUser).then(res => {
-        if (res.msg === 'success') { // 添加成功
+        if (res.code === 1) { // 添加成功
           this.$message({
             message: '添加成功',
             type: 'success'
@@ -169,9 +171,11 @@ export default {
           this.getUserList() // 更新成功，重新获取数据
         } else { // 更新失败
           this.$message({
-            message: res.msg,
+            message: res.message,
             type: 'error'
           })
+          this.isShowNewDialog = false // 关闭弹窗
+          this.getUserList() // 更新成功，重新获取数据
         }
       })
     },

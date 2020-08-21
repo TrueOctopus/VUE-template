@@ -3,7 +3,7 @@
  * @Date: 2020-08-18 10:54:28
  * @Descripttion: 表格
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-18 11:33:14
+ * @LastEditTime: 2020-08-21 17:08:26
 -->
 <template>
   <div class="table">
@@ -14,6 +14,7 @@
       tooltip-effect="light"
     >
       <el-table-column label="文章id" prop="id" align="center" min-width="120" />
+      <el-table-column label="文件名" prop="filename" align="center" min-width="120" />
       <el-table-column label="文章类型" prop="art_type" align="center" min-width="120" />
       <el-table-column label="文章标题" prop="title" align="center" min-width="120" />
       <el-table-column label="时间" prop="timestamp" align="center" min-width="100" show-overflow-tooltip />
@@ -25,24 +26,34 @@
             icon="el-icon-search"
             @click="handleCat(scope.row)"
           >预览</el-button>
-          <!-- <el-button
-            type="text"
-            size="mini"
-            icon="el-icon-download"
-            @click="handleDownload(scope.row)"
-          >下载</el-button>
-          <el-button
-            type="text"
-            size="mini"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-          >更新</el-button> -->
+          <el-upload
+            class="upload-demo"
+            action="#"
+            :multiple="true"
+            :accept="mdType.toString()"
+            :before-upload="beforeUploadMd"
+            list-type="picture"
+            :http-request="uploadMd"
+            :show-file-list="false"
+          >
+            <el-button
+              type="text"
+              size="mini"
+              icon="el-icon-edit"
+            >更新</el-button>
+          </el-upload>
           <el-button
             type="text"
             size="mini"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
           >删除</el-button>
+          <el-button
+            type="text"
+            size="mini"
+            icon="el-icon-download"
+            @click="handleDownload(scope.row)"
+          >下载</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -64,7 +75,10 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      mdSize: 10,
+      mdType: ['.md']
+    }
   },
   created() {},
   mounted() {},
@@ -81,7 +95,7 @@ export default {
       this.$emit('handleDelete', row)
     },
     // 点击更新按钮
-    handleUpdate(row) {
+    uploadMd(row) {
       this.$emit('handleUpdate', row)
     },
     // 多选选择行时执行
@@ -94,9 +108,9 @@ export default {
     selectAll(selection) {
       this.$emit('update:ids', selection.map(item => item.gcId))
     },
-    // 表格内点击新增
-    handleRowAdd(row) {
-      this.$emit('handleRowAdd', row)
+    // 下载文档
+    handleDownload(row) {
+      this.$emit('handleDownload', row)
     },
     // 翻译stStatus
     formatStStauts(row) {
@@ -109,6 +123,30 @@ export default {
     // 翻译stEnddate
     formatStEnddate(row) {
       return row.stEnddate
+    },
+    // 上传之前，检查文件类型和文件大小
+    beforeUploadMd(file) {
+      /**
+       * 检查文件大小
+       */
+      if (file.size / 1024 / 1024 > this.mdSize) {
+        this.$message({
+          type: 'error',
+          message: `文件大小超过${this.mdSize}M`
+        })
+        return false
+      }
+      /**
+       * 检查文件类型  利用文件名的后缀名来判断文件类型
+       */
+      var type = file.name.split('.')[file.name.split('.').length - 1]
+      if (this.mdType.indexOf('.' + type) < 0) {
+        this.$message({
+          type: 'error',
+          message: `文件类型错误`
+        })
+        return false
+      }
     }
   }
 }
@@ -117,5 +155,9 @@ export default {
 <style>
 .article-body /deep/ img {
   width: 100%;
+}
+.upload-demo {
+  display: inline-block;
+  margin: 0 10px;
 }
 </style>

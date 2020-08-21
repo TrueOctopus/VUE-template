@@ -3,7 +3,7 @@
  * @Date: 2020-07-28 09:32:10
  * @Descripttion: 用户信息表单
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-18 10:47:11
+ * @LastEditTime: 2020-08-21 17:24:06
 -->
 <template>
   <div class="user-form">
@@ -22,10 +22,10 @@
       <el-form-item label="用户名" prop="username">
         <el-input v-model="data.username" clearable :disabled="operation === 'edit'" />
       </el-form-item>
-      <el-form-item label="姓名" prop="name">
+      <el-form-item v-if="operation === 'edit'" label="姓名" prop="name">
         <el-input v-model="data.name" clearable />
       </el-form-item>
-      <el-form-item label="性别" prop="sex">
+      <el-form-item v-if="operation === 'edit'" label="性别" prop="sex">
         <el-input v-model="data.sex" clearable />
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
@@ -34,25 +34,28 @@
       <!-- <el-form-item v-if="operation === 'new'" label="密码" prop="passwordHash">
         <el-input v-model="data.passwordHash" clearable />
       </el-form-item> -->
-      <el-form-item label="年级" prop="grade">
+      <el-form-item v-if="operation === 'edit'" label="年级" prop="grade">
         <el-input v-model="data.grade" clearable />
       </el-form-item>
-      <el-form-item label="学院" prop="college">
+      <el-form-item v-if="operation === 'edit'" label="学院" prop="college">
         <el-input v-model="data.college" clearable />
       </el-form-item>
-      <el-form-item label="专业" prop="major">
+      <el-form-item v-if="operation === 'edit'" label="专业" prop="major">
         <el-input v-model="data.major" clearable />
       </el-form-item>
-      <el-form-item label="学号" prop="student_num">
+      <el-form-item v-if="operation === 'edit'" label="学号" prop="student_num">
         <el-input v-model="data.student_num" clearable />
       </el-form-item>
-      <el-form-item label="电话" prop="phone_num">
+      <el-form-item v-if="operation === 'edit'" label="电话" prop="phone_num">
         <el-input v-model="data.phone_num" clearable />
       </el-form-item>
-      <el-form-item label="个人介绍">
+      <el-form-item v-if="operation === 'edit'" label="个人介绍">
         <el-input v-model="data.about_me" type="textarea" autosize placeholder="请输入内容" />
       </el-form-item>
-      <el-form-item label="上传头像 ">
+      <el-form-item v-if="operation === 'new'" label="密码">
+        <el-input v-model="data.password" type="password" autosize placeholder="请输入密码" />
+      </el-form-item>
+      <el-form-item v-if="operation === 'edit'" label="上传头像 ">
         <el-upload
           ref="uploadImg"
           class="avatar-uploader"
@@ -100,36 +103,38 @@ export default {
       if (value === '') {
         callback(new Error('请输入用户名'))
       } else {
-        if (this.operation === 'edit') {
-          callback()
-        } else {
-          UserApi.checkUsername(value).then((res) => {
-            console.log('res: ', res)
-            if (res.code === -1) {
-              callback(new Error('用户名已存在'))
-            } else {
-              callback()
-            }
-          })
-        }
+        // if (this.operation === 'edit') {
+        //   callback()
+        // } else {
+        //   UserApi.checkUsername(value).then((res) => {
+        //     console.log('res: ', res)
+        //     if (res.code === -1) {
+        //       callback(new Error('用户名已存在'))
+        //     } else {
+        //       callback()
+        //     }
+        //   })
+        // }
+        callback()
       }
     }
     var checkStuNum = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入学号'))
       } else {
-        if (this.operation === 'edit') {
-          callback()
-        } else {
-          UserApi.checkStuNum(value).then((res) => {
-            console.log('res: ', res)
-            if (res.code === -1) {
-              callback(new Error('学号已存在'))
-            } else {
-              callback()
-            }
-          })
-        }
+        // if (this.operation === 'edit') {
+        //   callback()
+        // } else {
+        //   UserApi.checkStuNum(value).then((res) => {
+        //     console.log('res: ', res)
+        //     if (res.code === -1) {
+        //       callback(new Error('学号已存在'))
+        //     } else {
+        //       callback()
+        //     }
+        //   })
+        // }
+        callback()
       }
     }
     return {

@@ -3,12 +3,12 @@
  * @Date: 2020-07-28 10:33:49
  * @Descripttion:
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-07-28 11:15:06
+ * @LastEditTime: 2020-08-21 17:10:33
 -->
 <template>
   <div class="hand-serch">
     <el-form ref="headForm" :model="value" label-width="80px" :inline="true">
-      <el-form-item label="id" prop="id">
+      <!-- <el-form-item label="id" prop="id">
         <el-input v-model="value.id" clearable />
       </el-form-item>
       <el-form-item label="用户名" prop="username">
@@ -31,10 +31,10 @@
       </el-form-item>
       <el-form-item label="地理位置" prop="location">
         <el-input v-model="value.location" clearable />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
         <el-button @click="handleReset">重置</el-button>
-        <el-button type="primary" @click="onSerch">搜索</el-button>
+        <!-- <el-button type="primary" @click="onSerch">搜索</el-button> -->
         <el-button type="info" @click="handleNew">新增</el-button>
       </el-form-item>
     </el-form>
@@ -75,7 +75,7 @@ export default {
      */
     handleReset() {
       this.$refs['headForm'].resetFields()
-      // this.$emit('handleReset')
+      this.$emit('handleReset')
     },
     /**
      * @Author: 杨旭晨
