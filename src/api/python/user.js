@@ -3,7 +3,7 @@
  * @Date: 2020-08-10 10:20:45
  * @Descripttion: 用户api
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-22 08:39:22
+ * @LastEditTime: 2020-08-22 22:15:53
  */
 import request from '@/utils/request'
 
@@ -73,6 +73,17 @@ export default {
     return request({
       url: `/gets/getById/${id}`,
       method: 'get'
+    })
+  },
+  // 修改权限
+  changeRole(email, perm) {
+    return request({
+      url: '/users/changePermission',
+      method: 'post',
+      data: {
+        email,
+        perm
+      }
     })
   }
 }

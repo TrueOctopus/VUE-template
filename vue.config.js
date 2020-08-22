@@ -49,6 +49,17 @@ module.exports = {
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
         }
+      },
+      '/api/': {
+        // target: `http://yangxuchen.com:8080/project`,
+        // target: `http://127.0.0.1:3500`,
+        target: `http://81.70.11.36/api/v1/`,
+        changeOrigin: true,
+        ws: false,
+        timeout: 3 * 60 * 1000,
+        pathRewrite: {
+          ['^' + '/api/']: ''
+        }
       }
     }
   },

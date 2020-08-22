@@ -3,7 +3,7 @@
  * @Date: 2020-07-24 10:40:27
  * @Descripttion:
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-22 08:25:53
+ * @LastEditTime: 2020-08-22 21:23:01
  */
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
@@ -15,6 +15,7 @@ const service = axios.create({
   // baseURL: 'http://yangxuchen.com:8080/project',
   baseURL: 'http://81.70.11.36/api/v1/',
   // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  // baseURL: '/api/',
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 * 3600 // request timeout
 })

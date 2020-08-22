@@ -3,7 +3,7 @@
  * @Date: 2020-07-24 10:40:27
  * @Descripttion: 用户组件
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-22 09:24:26
+ * @LastEditTime: 2020-08-22 22:16:32
 -->
 <template>
   <div class="app-container">
@@ -11,11 +11,14 @@
     <UserTable
       :user-list="userList"
       :list-loading="listLoading"
+      :role-data="roleData"
       @handleEdit="handleEdit"
       @handleDelete="handleDelete"
+      @handleEditRole="handleEditRole"
     />
     <UserEditDialog :edit-user="editUserData" :is-show="isShowEditDialog" @handleClose="handleClose" @onSubmit="update" />
     <UserNewDialog :is-show="isShowNewDialog" @handleClose="handleClose" @onSubmit="insert" />
+    <EditRole :is-show.sync="isShowEditRoleDialog" :role-data="roleData" :edit-role-data="editRoleData" @editRole="editRole" />
   </div>
 </template>
 
@@ -25,13 +28,15 @@ import UserTable from './components/userTable'
 import UserEditDialog from './components/userEditDialog'
 import UserNewDialog from './components/userNewDialog'
 import HeadSerch from './components/headSerch'
+import EditRole from './components/editRole'
 export default {
   name: 'User',
   components: {
     UserTable,
     UserEditDialog,
     HeadSerch,
-    UserNewDialog
+    UserNewDialog,
+    EditRole
     //
   },
   data() {
@@ -51,7 +56,36 @@ export default {
         studentNum: '',
         email: '',
         location: ''
-      }
+      },
+      roleData: [  // 用户权限信息
+        {
+          value: 1,
+          label: '游客',
+          name: 'Tourst'
+        },
+        {
+          value: 2,
+          label: '未验证用户',
+          name: 'UnauthenticatedUser'
+        },
+        {
+          value: 3,
+          label: '普通用户',
+          name: 'NormalUser'
+        },
+        {
+          value: 4,
+          label: '科协成员',
+          name: 'KXMember'
+        },
+        {
+          value: 5,
+          label: '管理员',
+          name: 'Administrator'
+        }
+      ],
+      editRoleData: {},  // 修改权限弹窗数据
+      isShowEditRoleDialog: false  // 是否显示修改权限弹窗
     }
   },
   mounted() {
@@ -114,6 +148,20 @@ export default {
             type: 'error'
           })
         }
+      })
+    },
+    // 修改权限
+    editRole() {
+      console.log('editData', this.editRoleData)
+      var roleName = this.roleData.filter(item => item.value === this.editRoleData.roleId)
+      console.log('roleName', roleName)
+      UserApi.changeRole(this.editRoleData.email, roleName[0].name).then(res => {
+        this.$message({
+          type: res.code === 1 ? 'success' : 'error',
+          message: res.message
+        })
+        this.getUserList()
+        this.isShowEditRoleDialog = false
       })
     },
     /**
@@ -199,6 +247,12 @@ export default {
           this.getUserList()
         })
       })
+    },
+    // 修改权限
+    handleEditRole(row) {
+      // console.log('点击了修改权限', row.email, row.role_id)
+      this.isShowEditRoleDialog = true
+      this.editRoleData = { email: row.email, roleId: row.role_id }
     }
   }
 }

@@ -3,37 +3,41 @@
  * @Date: 2020-07-24 12:05:51
  * @Descripttion: 用户表格
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-18 09:49:24
+ * @LastEditTime: 2020-08-22 22:23:54
 -->
 <template>
   <div class="user-table">
     <el-table v-loading="listLoading" :data="userList" style="width: 100%" border stripe>
       <el-table-column prop="id" label="id" align="center" width="60" />
       <el-table-column prop="username" label="用户名" align="center" width="120" />
-      <el-table-column prop="name" label="姓名" align="center" width="120" />
+      <el-table-column prop="name" label="姓名" align="center" width="100" />
       <el-table-column prop="sex" label="性别" align="center" width="60" :formatter="formatSex" />
       <el-table-column prop="email" label="邮箱" align="center" width="200" />
-      <el-table-column prop="grade" label="年级" align="center" width="120" />
+      <el-table-column prop="grade" label="年级" align="center" width="60" />
       <el-table-column prop="college" label="学院" align="center" width="120" />
-      <el-table-column prop="major" label="专业" align="center" width="120" />
+      <el-table-column prop="major" label="专业" align="center" width="120" :formatter="formatMajor" />
       <el-table-column prop="student_num" label="学号" align="center" width="120" />
       <el-table-column prop="phone_num" label="电话" align="center" width="120" />
       <el-table-column prop="about_me" label="个人介绍" align="center" width="120" />
-      <el-table-column prop="confirmed" label="邮箱验证" align="center" width="120" :formatter="formatConfirmed" />
+      <el-table-column prop="confirmed" label="邮箱验证" align="center" width="80" :formatter="formatConfirmed" />
+      <el-table-column prop="role_id" label="权限" align="center" width="120" :formatter="formatRoleId" />
       <el-table-column prop="profile_photo" label="头像" align="center" width="120">
         <template slot-scope="scope">
           <div class="header-img" style="width: 100px;hegith: 100px;">
-            <img :src="scope.row.profile_photo | img" alt="头像丢了" style="width:100%;" />
+            <img :src="scope.row.profile_photo | img" alt="头像丢了" width="100" height="100" />
           </div>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" fixed="right">
         <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" content="删除" placement="top">
+          <el-tooltip v-if="userInfo.role_id === 5" class="item" effect="dark" content="删除" placement="top">
             <svg-icon icon-class="delete" class-name="button" @click="handleDelete(scope.$index, scope.row)" />
           </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+          <el-tooltip v-if="userInfo.role_id === 5" class="item" effect="dark" content="编辑" placement="top">
             <svg-icon icon-class="edit" class-name="button" @click="handleEdit(scope.$index, scope.row)" />
+          </el-tooltip>
+          <el-tooltip v-if="userInfo.role_id === 5" class="item" effect="dark" content="修改权限" placement="top">
+            <svg-icon icon-class="role" class-name="button" @click="handleEditRole(scope.$index, scope.row)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -51,18 +55,24 @@ export default {
     }
   },
   props: {
-    userList: {
+    userList: {  // 列表数据
       type: Array,
       required: true,
       default: () => []
     },
-    listLoading: {
+    listLoading: {  // 是否加载状态
       type: Boolean,
       default: false
+    },
+    roleData: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
-    return {}
+    return {
+      userInfo: this.$store.getters.userInfo
+    }
   },
   created() {},
   mounted() {},
@@ -100,6 +110,22 @@ export default {
         return '数据错误'
       }
     },
+    // 翻译专业
+    formatMajor(row) {
+      if (row.college === '信息工程学院') {
+        return row.major
+      } else {
+        return '这人不是信工的'
+      }
+    },
+    // 翻译用户权限字段
+    formatRoleId(row) {
+      var roleData = this.roleData.filter(item => item.value === row.role_id)
+      if (roleData.length > 0) {
+        return roleData[0].label
+      }
+      return ''
+    },
     /**
      * @Author: 杨旭晨
      * @Date: 2020-07-24 16:07:23
@@ -121,6 +147,10 @@ export default {
      */
     handleDelete(index, row) {
       this.$emit('handleDelete', index, row)
+    },
+    // 点击修改权限
+    handleEditRole(index, row) {
+      this.$emit('handleEditRole', row)
     }
   }
 }
