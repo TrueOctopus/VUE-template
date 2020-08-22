@@ -64,8 +64,7 @@ export default {
   data() {
     var validateEmail = (rule, value, callback) => {
       var mailReg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
-      console.log('验证', mailReg.test(value))
-      console.log('value', value)
+
       if (!value) {
         return callback(new Error('请输入邮箱！'))
       } else if (!mailReg.test(value)) {
@@ -75,7 +74,6 @@ export default {
       }
     }
     var validatePassword = (rule, value, callback) => {
-      console.log('密码', value)
       if (!value) {
         return callback(new Error('请输入密码！'))
       } else if (value.length > 15 || value.length < 6) {

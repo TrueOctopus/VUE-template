@@ -3,7 +3,7 @@
  * @Date: 2020-07-24 10:40:27
  * @Descripttion:
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-18 11:54:05
+ * @LastEditTime: 2020-08-22 08:25:53
  */
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
@@ -28,7 +28,7 @@ service.interceptors.request.use(
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
+      config.headers['Authorization'] = getToken()
     }
     return config
   },

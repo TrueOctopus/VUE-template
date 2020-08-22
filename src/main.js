@@ -3,7 +3,7 @@
  * @Date: 2020-07-24 10:40:27
  * @Descripttion: 主入口文件
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-07-28 15:40:08
+ * @LastEditTime: 2020-08-22 08:35:21
  */
 import Vue from 'vue'
 
@@ -34,6 +34,12 @@ import '@/permission' // permission control
 //   const { mockXHR } = require('../mock')
 //   mockXHR()
 // }
+
+import * as filters from './filters' // 全局过滤器
+// 注册全局过滤器
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })

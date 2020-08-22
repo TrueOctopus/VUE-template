@@ -3,7 +3,7 @@
  * @Date: 2020-08-10 10:20:45
  * @Descripttion: 用户api
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-18 09:27:52
+ * @LastEditTime: 2020-08-22 08:39:22
  */
 import request from '@/utils/request'
 
@@ -63,28 +63,16 @@ export default {
   },
   /**
    * @Author: 杨旭晨
-   * @Date: 2020-07-28 14:53:14
+   * @Date: 2020-08-22 08:39:04
    * @LastEditors: 杨旭晨
-   * @Descripttion: 验证用户名是否可用
-   * @param username String 要验证的用户名
+   * @Descripttion: 根据id获取用户信息
+   * @param id String 用户id
+   * @return axios
    */
-  // checkUsername(username) {
-  //   return request({
-  //     url: 'user/checkUsername/' + username,
-  //     method: 'post'
-  //   })
-  // },
-  /**
-   * @Author: 杨旭晨
-   * @Date: 2020-07-28 14:53:43
-   * @LastEditors: 杨旭晨
-   * @Descripttion: 验证学号是否可用
-   * @param stuNum String 要验证的学号
-   */
-  // checkStuNum(stuNum) {
-  //   return request({
-  //     url: 'user/checkStuNum/' + stuNum,
-  //     method: 'post'
-  //   })
-  // }
+  getById(id) {
+    return request({
+      url: `/gets/getById/${id}`,
+      method: 'get'
+    })
+  }
 }

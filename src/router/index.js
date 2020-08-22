@@ -3,7 +3,7 @@
  * @Date: 2020-07-24 10:40:27
  * @Descripttion:
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-18 10:45:00
+ * @LastEditTime: 2020-08-22 08:51:54
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -84,10 +84,25 @@ export const constantRoutes = [
     meta: { title: '文章管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'article',
+        path: 'index',
         name: '文章管理',
         component: () => import('@/views/article/index'),
-        meta: { title: '文章管理', icon: 'user' }
+        meta: { title: '文章管理', icon: 'el-icon-folder' }
+      }
+    ]
+  },
+  {
+    path: '/Applicant',
+    component: Layout,
+    redirect: '/Applicant/index',
+    name: '报名管理',
+    meta: { title: '报名管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'index',
+        name: '报名管理',
+        component: () => import('@/views/applicant/index'),
+        meta: { title: '报名管理', icon: 'el-icon-edit-outline' }
       }
     ]
   },

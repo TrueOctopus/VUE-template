@@ -3,7 +3,7 @@
  * @Date: 2020-08-18 10:44:47
  * @Descripttion:
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-21 17:05:09
+ * @LastEditTime: 2020-08-22 09:25:18
 -->
 <template>
   <div class="article">
@@ -38,27 +38,31 @@ export default {
     getList() {
       this.loading = true
       articleApi.getList().then(res => {
-        console.log('articleList', res)
         this.articleList = res
         this.loading = false
       })
     },
     // 删除文章
     handleDelete(row) {
-      articleApi.delete(row.title).then(res => {
-        console.log('delete', res)
-        if (res.code === 1) {
-          this.$message({
-            type: 'success',
-            message: res.message
-          })
-          this.getList()
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.message
-          })
-        }
+      this.$confirm('确定删除吗', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        articleApi.delete(row.title).then(res => {
+          if (res.code === 1) {
+            this.$message({
+              type: 'success',
+              message: res.message
+            })
+            this.getList()
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.message
+            })
+          }
+        })
       })
     },
     // 添加文章

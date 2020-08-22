@@ -3,7 +3,7 @@
  * @Date: 2020-07-24 10:40:27
  * @Descripttion:
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-07-24 11:28:51
+ * @LastEditTime: 2020-08-22 08:42:58
  */
 import router from './router'
 import store from './store'
@@ -37,18 +37,18 @@ router.beforeEach(async(to, from, next) => {
       if (hasGetUserInfo) {
         next()
       } else {
-        // try {
-        //   // get user info
-        //   // await store.dispatch('user/getInfo')
+        try {
+          // get user info
+          await store.dispatch('user/getInfo')
 
-        //   next()
-        // } catch (error) {
-        //   // remove token and go to login page to re-login
-        //   await store.dispatch('user/resetToken')
-        //   Message.error(error || 'Has Error')
-        //   next(`/login?redirect=${to.path}`)
-        //   NProgress.done()
-        // }
+          next()
+        } catch (error) {
+          // remove token and go to login page to re-login
+          await store.dispatch('user/resetToken')
+          this.$message.error(error || 'Has Error')
+          next(`/login?redirect=${to.path}`)
+          NProgress.done()
+        }
         next()
       }
     }

@@ -3,7 +3,7 @@
  * @Date: 2020-07-24 10:40:27
  * @Descripttion: 用户组件
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-21 17:26:25
+ * @LastEditTime: 2020-08-22 09:24:26
 -->
 <template>
   <div class="app-container">
@@ -66,7 +66,6 @@ export default {
      */
     getUserList() {
       UserApi.listAll().then(res => {
-        console.log('res: ', res)
         this.userList = res
         this.listLoading = false
       })
@@ -78,7 +77,6 @@ export default {
      * @Descripttion: 用户表格中，点击编辑按钮
      */
     handleEdit(index, row) {
-      console.log('row: ', row)
       this.isShowEditDialog = true
       this.editUserData = { ...row }
     },
@@ -130,7 +128,6 @@ export default {
       this.getUserList()
     },
     handleReset() {
-      console.log('重置')
       this.headSerchData = { // 头部搜索的数据
         id: '',
         username: '',
@@ -160,7 +157,7 @@ export default {
      * @param newUser Object 新增的用户信息
      */
     insert(newUser) {
-      console.log('newUser: ', newUser)
+      this.listLoading = true
       UserApi.add(newUser).then(res => {
         if (res.code === 1) { // 添加成功
           this.$message({
@@ -188,25 +185,19 @@ export default {
      * @param row  Object  当前行数据
      */
     handleDelete(index, row) {
-      UserApi.delete(row.id).then(res => {
-        console.log('delete', res)
-        this.$message({
-          type: 'success',
-          message: res.message
+      this.$confirm('确定删除吗', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.listLoading = true
+        UserApi.delete(row.id).then(res => {
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
+          this.getUserList()
         })
-        this.getUserList()
-        // if (res.msg === 'success') { // 更新成功
-        //   this.$message({
-        //     message: '删除成功',
-        //     type: 'success'
-        //   })
-        //   this.getUserList() // 更新成功，重新获取数据
-        // } else { // 更新失败
-        //   this.$message({
-        //     message: res.msg,
-        //     type: 'error'
-        //   })
-        // }
       })
     }
   }

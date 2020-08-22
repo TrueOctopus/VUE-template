@@ -3,15 +3,17 @@
  * @Date: 2020-07-24 10:40:27
  * @Descripttion:
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-10 15:24:46
+ * @LastEditTime: 2020-08-22 08:47:19
  */
 // import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, getUserId, setUserId, removeUserId } from '@/utils/auth'
 import { resetRouter } from '@/router'
+import userApi from '@/api/python/user'
 
 const getDefaultState = () => {
   return {
     token: getToken(),
+    userId: getUserId(),
     name: '',
     avatar: '',
     userInfo: {} // 用户信息
@@ -21,6 +23,9 @@ const getDefaultState = () => {
 const state = getDefaultState()
 
 const mutations = {
+  SER_USERID: (state, data) => {
+    state.userId = data
+  },
   RESET_STATE: (state) => {
     Object.assign(state, getDefaultState())
   },
@@ -42,11 +47,12 @@ const actions = {
   // user login
   login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
-      var token = 'token'
       var user = { ...userInfo }
       commit('SET_USERINFO', user)
-      commit('SET_TOKEN', token)
-      setToken(token)
+      commit('SET_TOKEN', user.token)
+      commit('SER_USERID', user.id)
+      setToken(user.token)
+      setUserId(user.id)
       resolve()
     })
   },
@@ -54,17 +60,12 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
-        if (!data) {
-          return reject('Verification failed, please Login again.')
-        }
-        const { name, avatar } = data
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
+      userApi.getById(state.userId).then(res => {
+        var user = { ...res }
+        commit('SET_USERINFO', user)
+        resolve()
+      }).catch(err => {
+        reject(err)
       })
     })
   },
@@ -73,6 +74,7 @@ const actions = {
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       removeToken() // must remove  token  first
+      removeUserId()
       resetRouter()
       commit('RESET_STATE')
       resolve()
@@ -83,6 +85,7 @@ const actions = {
   resetToken({ commit }) {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
+      removeUserId()
       commit('RESET_STATE')
       resolve()
     })
