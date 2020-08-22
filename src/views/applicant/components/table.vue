@@ -3,7 +3,7 @@
  * @Date: 2020-08-22 08:56:27
  * @Descripttion: table
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-22 09:18:38
+ * @LastEditTime: 2020-08-22 09:31:02
 -->
 <template>
   <div class="table">
@@ -23,14 +23,14 @@
       <el-table-column prop="cognition" label="部门认知" align="center" width="120" />
       <el-table-column prop="about_me" label="自我介绍" align="center" width="120" />
 
-      <el-table-column prop="profile_photo" label="头像" align="center" width="120">
+      <!-- <el-table-column prop="profile_photo" label="头像" align="center" width="120">
         <template slot-scope="scope">
           <div class="header-img" style="width: 100px;hegith: 100px;">
             <img v-if="scope.row.profil_photo" :src="scope.row.profile_photo | img" alt="头像丢了" style="width:100%;" />
             <span v-else>这个人没有头像</span>
           </div>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="操作" align="center" fixed="right">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" content="删除" placement="top">
