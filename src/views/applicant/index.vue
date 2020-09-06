@@ -3,11 +3,11 @@
  * @Date: 2020-08-22 08:51:21
  * @Descripttion: 报名管理主页面
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-22 09:25:11
+ * @LastEditTime: 2020-09-06 20:24:48
 -->
 <template>
   <div class="applicant">
-    <Table :applicant-list="applicantList" :loading="loading" @handleDelete="handleDelete" />
+    <Table :applicant-list="applicantList" :loading="loading" @handleDelete="handleDelete" @handlePass="handlePass" />
   </div>
 </template>
 <script>
@@ -56,6 +56,18 @@ export default {
         type: 'warning'
       }).then(() => {
         this.delete(row.id)
+      })
+    },
+    // 点击通过
+    handlePass(message, email) {
+      var loading = this.$loading({ fullscreen: true })
+      applicantApi.pass(message, email).then(res => {
+        this.$message({
+          type: res.code === 1 ? 'success' : 'error',
+          message: res.message
+        })
+        loading.close()
+        this.getList()
       })
     }
   }

@@ -3,7 +3,7 @@
  * @Date: 2020-07-24 12:05:51
  * @Descripttion: 用户表格
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-22 22:23:54
+ * @LastEditTime: 2020-08-22 22:28:38
 -->
 <template>
   <div class="user-table">
@@ -33,7 +33,7 @@
           <el-tooltip v-if="userInfo.role_id === 5" class="item" effect="dark" content="删除" placement="top">
             <svg-icon icon-class="delete" class-name="button" @click="handleDelete(scope.$index, scope.row)" />
           </el-tooltip>
-          <el-tooltip v-if="userInfo.role_id === 5" class="item" effect="dark" content="编辑" placement="top">
+          <el-tooltip v-if="userInfo.role_id === 5 || scope.row.id === userInfo.id" class="item" effect="dark" content="编辑" placement="top">
             <svg-icon icon-class="edit" class-name="button" @click="handleEdit(scope.$index, scope.row)" />
           </el-tooltip>
           <el-tooltip v-if="userInfo.role_id === 5" class="item" effect="dark" content="修改权限" placement="top">

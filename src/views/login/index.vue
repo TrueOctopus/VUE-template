@@ -59,6 +59,7 @@
 
 <script>
 import loginApi from '@/api/python/login'
+import USER_CONST from '@/constant/user-const'
 export default {
   name: 'Login',
   data() {
@@ -138,10 +139,18 @@ export default {
                   message: '密码错误'
                 })
               } else if (res.code === 1) {
+                if (res.role_id !== USER_CONST.ADMINISTRATOR.value) {
+                  this.$message({
+                    type: 'error',
+                    message: '权限不足'
+                  })
+                  return
+                }
                 this.$message({
                   type: 'success',
                   message: '登陆成功'
                 })
+
                 this.$store.dispatch('user/login', res).then(() => {
                   this.$router.push({ path: this.redirect || '/' })
                   this.loading = false

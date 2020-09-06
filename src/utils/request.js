@@ -3,17 +3,18 @@
  * @Date: 2020-07-24 10:40:27
  * @Descripttion:
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-22 21:23:01
+ * @LastEditTime: 2020-09-06 20:14:04
  */
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import {  Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
   // baseURL: 'http://yangxuchen.com:8080/project',
-  baseURL: 'http://81.70.11.36/api/v1/',
+  // baseURL: '//api.hguxgkx.com/api/v1/',
+  baseURL: 'http://192.168.50.185:5000/api/v1',
   // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // baseURL: '/api/',
   // withCredentials: true, // send cookies when cross-domain requests
