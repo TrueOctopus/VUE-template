@@ -3,7 +3,7 @@
  * @Date: 2020-09-06 20:41:28
  * @Descripttion:
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-09-06 21:29:40
+ * @LastEditTime: 2020-09-07 22:13:14
  */
 import request from '@/utils/request'
 
@@ -68,6 +68,19 @@ export default {
         idcard,
         dormitory_name
       }
+    })
+  },
+  /**
+   * @Author: 杨旭晨
+   * @Date: 2020-09-07 22:11:52
+   * @LastEditors: 杨旭晨
+   * @Descripttion: 获取宿舍id和name列表
+   * @return axios
+   */
+  getRoomList() {
+    return request({
+      url: '/stu/getRoomList',
+      method: 'get'
     })
   }
 }

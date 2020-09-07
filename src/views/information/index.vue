@@ -3,11 +3,23 @@
  * @Date: 2020-09-06 20:36:46
  * @Descripttion: 报道管理
  * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-09-06 21:54:11
+ * @LastEditTime: 2020-09-07 22:16:17
 -->
 <template>
   <div class="information">
-    <Table :table-list="tableList" :loading="loading" @handleSelect="handleSelect" />
+    <el-form :model="queryParams" inline>
+      <el-form-item label="报道状态">
+        <el-select v-model="queryParams.flag" placeholder="请选择状态">
+          <el-option label="全部" value="0"></el-option>
+          <el-option label="已报到" value="1"></el-option>
+          <el-option label="未报到" value="2"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">搜索</el-button>
+      </el-form-item>
+    </el-form>
+    <Table :table-list="tableList" :loading="loading" :room-list="roomList" @handleSelect="handleSelect" />
     <Dialog :is-open.sync="isOpen" :row="dialogRow" @getList="getList" />
   </div>
 </template>
@@ -27,14 +39,23 @@ export default {
       tableList: [],  // 表格数据
       isOpen: false, // 选宿舍弹窗是否开启
       dialogRow: {},  // 打开弹窗时的行数据
-      loading: false  // 表格是否处于加载状态
+      loading: false,  // 表格是否处于加载状态
+      queryParams: {},  // 筛选条件,
+      roomList: []  // 宿舍列表
     }
   },
   created() {},
   mounted() {
     this.getList()
+    this.getRoomList()
   },
   methods: {
+    // 获取宿舍列表
+    getRoomList() {
+      informationApi.getRoomList().then(res => {
+        this.roomList = res
+      })
+    },
     // 获取数据
     getList() {
       this.loading = true
@@ -49,6 +70,21 @@ export default {
       console.log('选宿舍', row)
       this.dialogRow = { ...row }
       this.isOpen = true
+    },
+    // 点击搜索
+    onSubmit() {
+      this.loading = false
+      if (this.queyrParams.flag === null || this.queryParams.flag === undefined) {
+        this.$message({
+          type: 'warning',
+          message: '请选择状态'
+        })
+        return
+      }
+      informationApi.getList(Number(this.queryParams.flag)).then(res => {
+        this.tableList = res
+        this.loading = false
+      })
     }
   }
 }
