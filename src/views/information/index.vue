@@ -2,8 +2,8 @@
  * @Author: 杨旭晨
  * @Date: 2020-09-06 20:36:46
  * @Descripttion: 报道管理
- * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-09-07 22:16:17
+ * @LastEditors: 杨雨衡
+ * @LastEditTime: 2020-09-08 16:22:05
 -->
 <template>
   <div class="information">
@@ -17,6 +17,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">搜索</el-button>
+        <div style="float:right;color:red">注意：王昕哲由于是特制大床房，需要安排宿舍在6-106</div>
       </el-form-item>
     </el-form>
     <Table :table-list="tableList" :loading="loading" :room-list="roomList" @handleSelect="handleSelect" />
@@ -40,7 +41,9 @@ export default {
       isOpen: false, // 选宿舍弹窗是否开启
       dialogRow: {},  // 打开弹窗时的行数据
       loading: false,  // 表格是否处于加载状态
-      queryParams: {},  // 筛选条件,
+      queryParams: {
+        flag: '0'
+      },  // 筛选条件,
       roomList: []  // 宿舍列表
     }
   },
@@ -74,13 +77,6 @@ export default {
     // 点击搜索
     onSubmit() {
       this.loading = false
-      if (this.queyrParams.flag === null || this.queryParams.flag === undefined) {
-        this.$message({
-          type: 'warning',
-          message: '请选择状态'
-        })
-        return
-      }
       informationApi.getList(Number(this.queryParams.flag)).then(res => {
         this.tableList = res
         this.loading = false

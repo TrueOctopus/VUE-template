@@ -2,8 +2,8 @@
  * @Author: 杨旭晨
  * @Date: 2020-07-24 10:40:27
  * @Descripttion:
- * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-22 08:47:19
+ * @LastEditors: 杨雨衡
+ * @LastEditTime: 2020-09-08 16:21:11
  */
 // import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken, getUserId, setUserId, removeUserId } from '@/utils/auth'
@@ -51,6 +51,7 @@ const actions = {
       commit('SET_USERINFO', user)
       commit('SET_TOKEN', user.token)
       commit('SER_USERID', user.id)
+      // commit('SET_USERNAME', user.name)
       setToken(user.token)
       setUserId(user.id)
       resolve()

@@ -2,8 +2,8 @@
  * @Author: 杨旭晨
  * @Date: 2020-07-28 09:32:10
  * @Descripttion: 用户信息表单
- * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-22 22:12:04
+ * @LastEditors: 杨雨衡
+ * @LastEditTime: 2020-09-08 12:43:40
 -->
 <template>
   <div class="user-form">
@@ -118,7 +118,6 @@
 </template>
 <script>
 import USER_CONST from '@/constant/user-const'
-import UserApi from '@/api/user/user'
 export default {
   name: 'UserForm',
   components: {},

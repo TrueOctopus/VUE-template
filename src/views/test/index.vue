@@ -2,8 +2,8 @@
  * @Author: 杨旭晨
  * @Date: 2020-08-04 16:52:43
  * @Descripttion:
- * @LastEditors: 杨旭晨
- * @LastEditTime: 2020-08-10 11:06:28
+ * @LastEditors: 杨雨衡
+ * @LastEditTime: 2020-09-08 12:43:29
 -->
 <template>
   <div class="test">
@@ -22,7 +22,6 @@
 <script>
 import request from '@/utils/request'
 import loginApi from '@/api/python/login'
-import login from '@/api/python/login'
 export default {
   name: 'Test',
   components: {},

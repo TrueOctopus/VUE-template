@@ -1,6 +1,13 @@
+<!--
+ * @Author: 杨雨衡
+ * @Date: 2020-09-07 22:35:00
+ * @Descripttion:
+ * @LastEditors: 杨雨衡
+ * @LastEditTime: 2020-09-08 17:12:35
+-->
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <div class="dashboard-text">用户名称: {{ username }}</div>
   </div>
 </template>
 
@@ -9,6 +16,11 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'Dashboard',
+  data() {
+    return {
+      username: this.$store.getters.userInfo.name
+    }
+  },
   computed: {
     ...mapGetters([
       'name'
